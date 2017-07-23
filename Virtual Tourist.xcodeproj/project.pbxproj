@@ -13,6 +13,7 @@
 		43FCFE051F251EAE00D854C9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43FCFE041F251EAE00D854C9 /* Assets.xcassets */; };
 		43FCFE081F251EAE00D854C9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43FCFE061F251EAE00D854C9 /* LaunchScreen.storyboard */; };
 		43FCFE111F2520A900D854C9 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43FCFE101F2520A900D854C9 /* MapKit.framework */; };
+		43FCFE141F2551D700D854C9 /* LocationsModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 43FCFE121F2551D700D854C9 /* LocationsModel.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		43FCFE071F251EAE00D854C9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		43FCFE091F251EAE00D854C9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43FCFE101F2520A900D854C9 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		43FCFE131F2551D700D854C9 /* LocationsModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LocationsModel.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,11 +60,9 @@
 		43FCFDFC1F251EAE00D854C9 /* Virtual Tourist */ = {
 			isa = PBXGroup;
 			children = (
-				43FCFDFD1F251EAE00D854C9 /* AppDelegate.swift */,
-				43FCFDFF1F251EAE00D854C9 /* TravelLocationsViewController.swift */,
-				43FCFE011F251EAE00D854C9 /* Main.storyboard */,
-				43FCFE041F251EAE00D854C9 /* Assets.xcassets */,
-				43FCFE061F251EAE00D854C9 /* LaunchScreen.storyboard */,
+				43FCFE151F2552A400D854C9 /* Model */,
+				43FCFE161F2552B100D854C9 /* View */,
+				43FCFE171F2552E100D854C9 /* Controller */,
 				43FCFE091F251EAE00D854C9 /* Info.plist */,
 			);
 			path = "Virtual Tourist";
@@ -74,6 +74,33 @@
 				43FCFE101F2520A900D854C9 /* MapKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		43FCFE151F2552A400D854C9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				43FCFE121F2551D700D854C9 /* LocationsModel.xcdatamodeld */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		43FCFE161F2552B100D854C9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				43FCFE011F251EAE00D854C9 /* Main.storyboard */,
+				43FCFE061F251EAE00D854C9 /* LaunchScreen.storyboard */,
+				43FCFE041F251EAE00D854C9 /* Assets.xcassets */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		43FCFE171F2552E100D854C9 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				43FCFDFD1F251EAE00D854C9 /* AppDelegate.swift */,
+				43FCFDFF1F251EAE00D854C9 /* TravelLocationsViewController.swift */,
+			);
+			name = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -150,6 +177,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				43FCFE001F251EAE00D854C9 /* TravelLocationsViewController.swift in Sources */,
+				43FCFE141F2551D700D854C9 /* LocationsModel.xcdatamodeld in Sources */,
 				43FCFDFE1F251EAE00D854C9 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -316,8 +344,22 @@
 				43FCFE0E1F251EAE00D854C9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		43FCFE121F2551D700D854C9 /* LocationsModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				43FCFE131F2551D700D854C9 /* LocationsModel.xcdatamodel */,
+			);
+			currentVersion = 43FCFE131F2551D700D854C9 /* LocationsModel.xcdatamodel */;
+			path = LocationsModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 43FCFDF21F251EAE00D854C9 /* Project object */;
 }
