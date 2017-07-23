@@ -15,6 +15,10 @@
 		43FCFE111F2520A900D854C9 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43FCFE101F2520A900D854C9 /* MapKit.framework */; };
 		43FCFE141F2551D700D854C9 /* LocationsModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 43FCFE121F2551D700D854C9 /* LocationsModel.xcdatamodeld */; };
 		43FCFE191F2554F500D854C9 /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FCFE181F2554F500D854C9 /* PhotoAlbumViewController.swift */; };
+		43FCFE261F2568F200D854C9 /* Photo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FCFE221F2568F200D854C9 /* Photo+CoreDataClass.swift */; };
+		43FCFE271F2568F200D854C9 /* Photo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FCFE231F2568F200D854C9 /* Photo+CoreDataProperties.swift */; };
+		43FCFE281F2568F200D854C9 /* Pin+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FCFE241F2568F200D854C9 /* Pin+CoreDataClass.swift */; };
+		43FCFE291F2568F200D854C9 /* Pin+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FCFE251F2568F200D854C9 /* Pin+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +32,10 @@
 		43FCFE101F2520A900D854C9 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		43FCFE131F2551D700D854C9 /* LocationsModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LocationsModel.xcdatamodel; sourceTree = "<group>"; };
 		43FCFE181F2554F500D854C9 /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoAlbumViewController.swift; sourceTree = "<group>"; };
+		43FCFE221F2568F200D854C9 /* Photo+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Photo+CoreDataClass.swift"; path = "../Photo+CoreDataClass.swift"; sourceTree = "<group>"; };
+		43FCFE231F2568F200D854C9 /* Photo+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Photo+CoreDataProperties.swift"; path = "../Photo+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		43FCFE241F2568F200D854C9 /* Pin+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Pin+CoreDataClass.swift"; path = "../Pin+CoreDataClass.swift"; sourceTree = "<group>"; };
+		43FCFE251F2568F200D854C9 /* Pin+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Pin+CoreDataProperties.swift"; path = "../Pin+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +89,10 @@
 		43FCFE151F2552A400D854C9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				43FCFE221F2568F200D854C9 /* Photo+CoreDataClass.swift */,
+				43FCFE231F2568F200D854C9 /* Photo+CoreDataProperties.swift */,
+				43FCFE241F2568F200D854C9 /* Pin+CoreDataClass.swift */,
+				43FCFE251F2568F200D854C9 /* Pin+CoreDataProperties.swift */,
 				43FCFE121F2551D700D854C9 /* LocationsModel.xcdatamodeld */,
 			);
 			name = Model;
@@ -179,6 +191,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43FCFE271F2568F200D854C9 /* Photo+CoreDataProperties.swift in Sources */,
+				43FCFE291F2568F200D854C9 /* Pin+CoreDataProperties.swift in Sources */,
+				43FCFE261F2568F200D854C9 /* Photo+CoreDataClass.swift in Sources */,
+				43FCFE281F2568F200D854C9 /* Pin+CoreDataClass.swift in Sources */,
 				43FCFE001F251EAE00D854C9 /* TravelLocationsViewController.swift in Sources */,
 				43FCFE141F2551D700D854C9 /* LocationsModel.xcdatamodeld in Sources */,
 				43FCFDFE1F251EAE00D854C9 /* AppDelegate.swift in Sources */,
