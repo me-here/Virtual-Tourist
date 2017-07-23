@@ -54,6 +54,20 @@ extension TravelLocationsViewController: MKMapViewDelegate {
         
         return annotationView
     }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        // Go to next vc
+        
+        performSegue(withIdentifier: "goToPhotoAlbum", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToPhotoAlbum" {
+            // Tell the vc stuff
+            // TODO: Make other vc's class
+            //var destination = storyboard?.instantiateViewController(withIdentifier: "")
+        }
+    }
 
 }
 
