@@ -12,25 +12,48 @@ import MapKit
 class TravelLocationsViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet var pressDetector: [UILongPressGestureRecognizer]!
-    let minPressTime: Double = 10.0
+    //let minPressTime: Double = 2.0
     
     
     @IBAction func longPress(_ sender: Any) {
         if pressDetector[0].state == UIGestureRecognizerState.began {   // When our finger is there, not lifted
             print("Felt a long press.")
+            let screenRelativeLoc = pressDetector[0].location(in: mapView)
+            let coordinate = mapView.convert(screenRelativeLoc, toCoordinateFrom: mapView)
+            
+            // Make annotation
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = coordinate
+            let annotationView = MKPinAnnotationView()
+            mapView.view(for: annotation)
+            
+            // Settings
+            annotationView.annotation = annotation
+            annotationView.animatesDrop = true
+            
+            DispatchQueue.main.async {
+                self.mapView.addAnnotation(annotation)
+            }
+            
         }
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        pressDetector[0].minimumPressDuration = minPressTime
+        //pressDetector[0].minimumPressDuration = minPressTime
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
 
+}
+
+extension TravelLocationsViewController: MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        let annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "TravelAnnotationView")
+        annotationView.animatesDrop = true
+        
+        
+        return annotationView
+    }
 
 }
 
