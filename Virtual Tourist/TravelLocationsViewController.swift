@@ -12,6 +12,7 @@ import MapKit
 class TravelLocationsViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet var pressDetector: [UILongPressGestureRecognizer]!
+    var coordinateTapped: CLLocationCoordinate2D? = nil
     //let minPressTime: Double = 2.0
     
     
@@ -57,7 +58,7 @@ extension TravelLocationsViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         // Go to next vc
-        
+        coordinateTapped = (view.annotation?.coordinate)!
         performSegue(withIdentifier: "goToPhotoAlbum", sender: self)
     }
     
@@ -65,7 +66,10 @@ extension TravelLocationsViewController: MKMapViewDelegate {
         if segue.identifier == "goToPhotoAlbum" {
             // Tell the vc stuff
             // TODO: Make other vc's class
-            //var destination = storyboard?.instantiateViewController(withIdentifier: "")
+            let destination = segue.destination as! PhotoAlbumViewController
+            if let loc = coordinateTapped {
+                destination.mapLocation = loc
+            }
         }
     }
 

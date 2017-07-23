@@ -72,7 +72,7 @@
         <!--Title-->
         <scene sceneID="10Q-Sh-jOZ">
             <objects>
-                <viewController id="OpE-a1-EbD" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="photoAlbum" id="OpE-a1-EbD" customClass="PhotoAlbumViewController" customModule="Virtual_Tourist" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="EL0-O9-yxO"/>
                         <viewControllerLayoutGuide type="bottom" id="mkT-hF-S2O"/>
@@ -98,6 +98,9 @@
                     <navigationItem key="navigationItem" title="Title" id="m8s-1J-cac">
                         <barButtonItem key="backBarButtonItem" title="Ok." id="qwH-HS-d1K"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="smallMapView" destination="9Ue-jc-L8l" id="K7r-cv-w4H"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mM7-CR-Wwg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

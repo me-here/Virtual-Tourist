@@ -14,6 +14,7 @@
 		43FCFE081F251EAE00D854C9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43FCFE061F251EAE00D854C9 /* LaunchScreen.storyboard */; };
 		43FCFE111F2520A900D854C9 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43FCFE101F2520A900D854C9 /* MapKit.framework */; };
 		43FCFE141F2551D700D854C9 /* LocationsModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 43FCFE121F2551D700D854C9 /* LocationsModel.xcdatamodeld */; };
+		43FCFE191F2554F500D854C9 /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FCFE181F2554F500D854C9 /* PhotoAlbumViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		43FCFE091F251EAE00D854C9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43FCFE101F2520A900D854C9 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		43FCFE131F2551D700D854C9 /* LocationsModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LocationsModel.xcdatamodel; sourceTree = "<group>"; };
+		43FCFE181F2554F500D854C9 /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoAlbumViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 			children = (
 				43FCFDFD1F251EAE00D854C9 /* AppDelegate.swift */,
 				43FCFDFF1F251EAE00D854C9 /* TravelLocationsViewController.swift */,
+				43FCFE181F2554F500D854C9 /* PhotoAlbumViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -179,6 +182,7 @@
 				43FCFE001F251EAE00D854C9 /* TravelLocationsViewController.swift in Sources */,
 				43FCFE141F2551D700D854C9 /* LocationsModel.xcdatamodeld in Sources */,
 				43FCFDFE1F251EAE00D854C9 /* AppDelegate.swift in Sources */,
+				43FCFE191F2554F500D854C9 /* PhotoAlbumViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
