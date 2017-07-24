@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 class BackgroundOps {
-    static func getPins(context: NSManagedObjectContext, entityName: String, completion: @escaping ([NSFetchRequestResult])->()) {
+    static func getDBItems(context: NSManagedObjectContext, entityName: String, completion: @escaping ([NSFetchRequestResult])->()) {
         DispatchQueue.global(qos: .background).async {
             let fetchEntity = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
 

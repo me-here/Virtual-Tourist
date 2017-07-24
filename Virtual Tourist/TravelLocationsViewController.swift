@@ -62,7 +62,7 @@ class TravelLocationsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         //pressDetector[0].minimumPressDuration = minPressTime
-        BackgroundOps.getPins(context: context, entityName: "Pin"){ pinArray in
+        BackgroundOps.getDBItems(context: context, entityName: "Pin"){ pinArray in
             guard let pins = pinArray as? [Pin] else {
                 print("Pin array error")
                 return
