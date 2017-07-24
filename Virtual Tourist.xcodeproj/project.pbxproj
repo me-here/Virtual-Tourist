@@ -21,6 +21,7 @@
 		43FCFE291F2568F200D854C9 /* Pin+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FCFE251F2568F200D854C9 /* Pin+CoreDataProperties.swift */; };
 		43FCFE2B1F256AE600D854C9 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FCFE2A1F256AE600D854C9 /* CoreDataStack.swift */; };
 		43FCFE2D1F25B0D900D854C9 /* BackgroundOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FCFE2C1F25B0D900D854C9 /* BackgroundOperations.swift */; };
+		43FCFE2F1F26A34F00D854C9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FCFE2E1F26A34F00D854C9 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		43FCFE251F2568F200D854C9 /* Pin+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Pin+CoreDataProperties.swift"; path = "../Pin+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		43FCFE2A1F256AE600D854C9 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		43FCFE2C1F25B0D900D854C9 /* BackgroundOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundOperations.swift; sourceTree = "<group>"; };
+		43FCFE2E1F26A34F00D854C9 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +102,7 @@
 				43FCFE2A1F256AE600D854C9 /* CoreDataStack.swift */,
 				43FCFE121F2551D700D854C9 /* LocationsModel.xcdatamodeld */,
 				43FCFE2C1F25B0D900D854C9 /* BackgroundOperations.swift */,
+				43FCFE2E1F26A34F00D854C9 /* Constants.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -198,6 +201,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				43FCFE271F2568F200D854C9 /* Photo+CoreDataProperties.swift in Sources */,
+				43FCFE2F1F26A34F00D854C9 /* Constants.swift in Sources */,
 				43FCFE291F2568F200D854C9 /* Pin+CoreDataProperties.swift in Sources */,
 				43FCFE261F2568F200D854C9 /* Photo+CoreDataClass.swift in Sources */,
 				43FCFE2D1F25B0D900D854C9 /* BackgroundOperations.swift in Sources */,

@@ -32,18 +32,28 @@ class PhotoAlbumViewController: UIViewController {
         smallMapView.isScrollEnabled = false
         smallMapView.isZoomEnabled = false
         
-        guard mapLocation != nil else {
+        guard let lat = mapLocation?.latitude, let lon = mapLocation?.longitude else {
             print("Point location is nil")
             return
         }
         
+        //print(pin?.photos?.isEmpty)
+        
         if let noPhotos = pin?.photos?.isEmpty {
             // What to do if there are no photos previously loaded
             // Make a flickr request
-            
+            print("Getting photos")
+            BackgroundOps.getPhotos(latitude: lat, longitude: lon, completion: { urlArray,error in
+                guard error == nil else {
+                    print(error?.localizedDescription ?? "I don't know what happened.")
+                    return
+                }
+                
+                
+            })
             print(noPhotos)
             // TODO: Load from Flickr
-            return
+            
         }
         
         // Otherwise we just load from DB
