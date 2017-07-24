@@ -24,9 +24,19 @@ class PhotoAlbumViewController: UIViewController {
         }
     }
 
+    @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let space: CGFloat = 5.0
+        flowLayout.minimumInteritemSpacing = space
+        flowLayout.minimumLineSpacing = space
+        
+        let numberOfColumns: CGFloat = 3.0
+        let width = (self.view.frame.size.width - (2 * space))/numberOfColumns
+        let height = (self.view.frame.size.height - (2 * space))/space
+        flowLayout.itemSize = CGSize(width: width, height: height)
         
         // Settings
         smallMapView.isScrollEnabled = false
@@ -57,7 +67,7 @@ class PhotoAlbumViewController: UIViewController {
         }
         
         // Otherwise we just load from DB
-        // TODO: Load from DB
+        
         
     }
     
@@ -77,4 +87,23 @@ class PhotoAlbumViewController: UIViewController {
 
     }
 
+}
+
+
+extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("Hey someone selected \(indexPath)")
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return Constants.imagesPer
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoAlbumCollectionViewCell", for: indexPath) as! PhotoAlbumCollectionViewCell
+        
+        cell.photo.image = #imageLiteral(resourceName: "placeholder")
+        
+        return cell
+    }
 }

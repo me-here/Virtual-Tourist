@@ -22,6 +22,7 @@
 		43FCFE2B1F256AE600D854C9 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FCFE2A1F256AE600D854C9 /* CoreDataStack.swift */; };
 		43FCFE2D1F25B0D900D854C9 /* BackgroundOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FCFE2C1F25B0D900D854C9 /* BackgroundOperations.swift */; };
 		43FCFE2F1F26A34F00D854C9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FCFE2E1F26A34F00D854C9 /* Constants.swift */; };
+		43FCFE311F26B6A000D854C9 /* PhotoAlbumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FCFE301F26B6A000D854C9 /* PhotoAlbumCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		43FCFE2A1F256AE600D854C9 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		43FCFE2C1F25B0D900D854C9 /* BackgroundOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundOperations.swift; sourceTree = "<group>"; };
 		43FCFE2E1F26A34F00D854C9 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		43FCFE301F26B6A000D854C9 /* PhotoAlbumCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoAlbumCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +125,7 @@
 				43FCFDFD1F251EAE00D854C9 /* AppDelegate.swift */,
 				43FCFDFF1F251EAE00D854C9 /* TravelLocationsViewController.swift */,
 				43FCFE181F2554F500D854C9 /* PhotoAlbumViewController.swift */,
+				43FCFE301F26B6A000D854C9 /* PhotoAlbumCollectionViewCell.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -211,6 +214,7 @@
 				43FCFE141F2551D700D854C9 /* LocationsModel.xcdatamodeld in Sources */,
 				43FCFDFE1F251EAE00D854C9 /* AppDelegate.swift in Sources */,
 				43FCFE191F2554F500D854C9 /* PhotoAlbumViewController.swift in Sources */,
+				43FCFE311F26B6A000D854C9 /* PhotoAlbumCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,7 +13,7 @@ struct Constants {
     static let flickrGetPhotos = "flickr.photos.search"
     static let apiKEY = "5595b45873ac0d54d687664b9e6c4711"
     static let urlFormat = "url_m"
-    static let imagesPer = "21"
+    static let imagesPer = 21
     static let format = "json"
     static let noJSONCallback = "1"
     //static let authToken = "72157684151340521-51cef79f1fefa450"
