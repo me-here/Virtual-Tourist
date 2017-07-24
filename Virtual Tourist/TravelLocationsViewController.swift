@@ -14,6 +14,7 @@ class TravelLocationsViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet var pressDetector: [UILongPressGestureRecognizer]!
     var coordinateTapped: CLLocationCoordinate2D? = nil
+    var pinTapped: Pin? = nil
     var context: NSManagedObjectContext {
         get{
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -32,9 +33,14 @@ class TravelLocationsViewController: UIViewController {
             let screenRelativeLoc = pressDetector[0].location(in: mapView)
             let coordinate = mapView.convert(screenRelativeLoc, toCoordinateFrom: mapView)
             
+            // Round the doubles so DB matches up
+            let roundLat = round(coordinate.latitude * 1000) / 1000
+            let roundLon = round(coordinate.longitude * 1000) / 1000
+            let roundedCoordinate = CLLocationCoordinate2D(latitude: roundLat, longitude: roundLon)
+            
             // Make annotation
             let annotation = MKPointAnnotation()
-            annotation.coordinate = coordinate
+            annotation.coordinate = roundedCoordinate
             let annotationView = MKPinAnnotationView()
             mapView.view(for: annotation)
             
@@ -42,8 +48,8 @@ class TravelLocationsViewController: UIViewController {
             annotationView.annotation = annotation
             annotationView.animatesDrop = true
             
-            let p = Pin(latitude: coordinate.latitude, longitude: coordinate.longitude, context: context)
-            //print(p.latitude, p.longitude, "-------")
+            _ = Pin(latitude: roundLat, longitude: roundLon, context: context)
+            
             
             
             do {
@@ -97,23 +103,30 @@ extension TravelLocationsViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         // Go to next vc
-        coordinateTapped = (view.annotation?.coordinate)!
-        print(coordinateTapped)
-        //let fr = NSFetchRequest<Pin>(entityName: "Pin")
-        let pin: NSFetchRequest<Pin> = Pin.fetchRequest()
-        pin.predicate = NSPredicate(format: "latitude = \((coordinateTapped?.latitude)!)")
-        let fetchedEntities: [Pin] = try! context.fetch(pin)
-        //print(fetchedEntities.index(of: Pin(latitude: (coordinateTapped?.latitude)!, longitude: (coordinateTapped?.longitude)!, context: context)))
-        for ent in fetchedEntities {
-            print(ent.latitude, ent.longitude)
+        guard let coordinateTapped = view.annotation?.coordinate else {
+            print("Invalid coordinates")
+            return
         }
-        print(fetchedEntities.isEmpty)
+        self.coordinateTapped = coordinateTapped
         
+        // Check for latitude and longitude
+        let latPredicate = NSPredicate(format: "latitude = \(coordinateTapped.latitude)")
+        let lonPredicate = NSPredicate(format: "longitude = \(coordinateTapped.longitude)")
+        let combPred = NSCompoundPredicate(andPredicateWithSubpredicates: [latPredicate, lonPredicate]) // We combine our predecates since we can only accept one
         
+        BackgroundOps.getDBItems(context: context, predicate: combPred, entityName: "Pin") { Pins in
+            guard let pin = Pins.first as? Pin else {
+                print("No pin with specified characteristics.")
+                return
+            }
+            
+            self.pinTapped = pin
+        }
         
-        performSegue(withIdentifier: "goToPhotoAlbum", sender: self)
-        
-        
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: "goToPhotoAlbum", sender: self)
+        }
+    
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -124,6 +137,10 @@ extension TravelLocationsViewController: MKMapViewDelegate {
             if let loc = coordinateTapped {
                 destination.mapLocation = loc
             }
+            
+            destination.pin = pinTapped // Set pin
+            
+            
         }
     }
 

@@ -13,6 +13,7 @@ import CoreData
 class PhotoAlbumViewController: UIViewController {
     @IBOutlet weak var smallMapView: MKMapView!
     var mapLocation: CLLocationCoordinate2D? = nil
+    var pin: Pin? = nil
     var context: NSManagedObjectContext {
         get{
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -31,12 +32,23 @@ class PhotoAlbumViewController: UIViewController {
         smallMapView.isScrollEnabled = false
         smallMapView.isZoomEnabled = false
         
-        guard let pointLoc = mapLocation else {
+        guard mapLocation != nil else {
             print("Point location is nil")
             return
         }
         
-        BackgroundOps.downloadPhotos(context: context, latitude: pointLoc.latitude, longitude: pointLoc.longitude)
+        if let noPhotos = pin?.photos?.isEmpty {
+            // What to do if there are no photos previously loaded
+            // Make a flickr request
+            
+            print(noPhotos)
+            // TODO: Load from Flickr
+            return
+        }
+        
+        // Otherwise we just load from DB
+        // TODO: Load from DB
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
