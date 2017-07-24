@@ -8,11 +8,21 @@
 
 import UIKit
 import MapKit
+import CoreData
 
 class TravelLocationsViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet var pressDetector: [UILongPressGestureRecognizer]!
     var coordinateTapped: CLLocationCoordinate2D? = nil
+    var context: NSManagedObjectContext {
+        get{
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            guard let place = appDelegate.stack?.context else {
+                fatalError("Context not found.")
+            }
+            return place
+        }
+    }
     //let minPressTime: Double = 2.0
     
     
@@ -32,6 +42,14 @@ class TravelLocationsViewController: UIViewController {
             annotationView.annotation = annotation
             annotationView.animatesDrop = true
             
+            _ = Pin(latitude: coordinate.latitude, longitude: coordinate.longitude, context: context)
+            do {
+                try context.save()
+                print("NEW PIN ADDED!!!")
+            }catch {
+                print("database err")
+            }
+            
             
             DispatchQueue.main.async {
                 self.mapView.addAnnotation(annotation)
@@ -40,9 +58,24 @@ class TravelLocationsViewController: UIViewController {
         }
     }
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //pressDetector[0].minimumPressDuration = minPressTime
+        BackgroundOps.getPins(context: context, entityName: "Pin"){ pinArray in
+            guard let pins = pinArray as? [Pin] else {
+                print("Pin array error")
+                return
+            }
+            
+            for pin in pins {
+                let annotationForPin = MKPointAnnotation()
+                annotationForPin.coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
+                
+                self.mapView.addAnnotation(annotationForPin)
+            }
+        }
+        
     }
 
 
