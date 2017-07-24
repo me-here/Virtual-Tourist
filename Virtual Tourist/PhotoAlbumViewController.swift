@@ -16,7 +16,11 @@ class PhotoAlbumViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         if mapLocation != nil {
-            smallMapView.setCenter(mapLocation!, animated: false)
+            //smallMapView.setCenter(mapLocation!, animated: false)
+            var region = MKCoordinateRegion()
+            region.center = mapLocation!
+            region.span = MKCoordinateSpan(latitudeDelta: 10, longitudeDelta: 10)
+            smallMapView.setRegion(region, animated: false)
         }
     }
 
