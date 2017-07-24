@@ -8,10 +8,21 @@
 
 import UIKit
 import MapKit
+import CoreData
 
 class PhotoAlbumViewController: UIViewController {
     @IBOutlet weak var smallMapView: MKMapView!
     var mapLocation: CLLocationCoordinate2D? = nil
+    var context: NSManagedObjectContext {
+        get{
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            guard let place = appDelegate.stack?.context else {
+                fatalError("Context not found.")
+            }
+            return place
+        }
+    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +30,13 @@ class PhotoAlbumViewController: UIViewController {
         // Settings
         smallMapView.isScrollEnabled = false
         smallMapView.isZoomEnabled = false
+        
+        guard let pointLoc = mapLocation else {
+            print("Point location is nil")
+            return
+        }
+        
+        BackgroundOps.downloadPhotos(context: context, latitude: pointLoc.latitude, longitude: pointLoc.longitude)
     }
     
     override func viewWillAppear(_ animated: Bool) {
