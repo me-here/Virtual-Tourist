@@ -32,6 +32,7 @@ class TravelLocationsViewController: UIViewController {
             annotationView.annotation = annotation
             annotationView.animatesDrop = true
             
+            
             DispatchQueue.main.async {
                 self.mapView.addAnnotation(annotation)
             }

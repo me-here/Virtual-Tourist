@@ -11,5 +11,14 @@ import CoreData
 
 @objc(Pin)
 public class Pin: NSManagedObject {
-
+    convenience init(latitude: Float, longitude: Float, context: NSManagedObjectContext) {
+        if let entity = NSEntityDescription.entity(forEntityName: "Pin", in: context) {
+            self.init(entity: entity, insertInto: context)
+            self.latitude = latitude
+            self.longitude = longitude
+        }else {
+            print("Invalid entity for given context.")
+            fatalError()    // Entity not accessible
+        }
+    }
 }
