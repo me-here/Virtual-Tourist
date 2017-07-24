@@ -42,7 +42,10 @@ class TravelLocationsViewController: UIViewController {
             annotationView.annotation = annotation
             annotationView.animatesDrop = true
             
-            _ = Pin(latitude: coordinate.latitude, longitude: coordinate.longitude, context: context)
+            let p = Pin(latitude: coordinate.latitude, longitude: coordinate.longitude, context: context)
+            //print(p.latitude, p.longitude, "-------")
+            
+            
             do {
                 try context.save()
                 print("NEW PIN ADDED!!!")
@@ -72,6 +75,8 @@ class TravelLocationsViewController: UIViewController {
                 let annotationForPin = MKPointAnnotation()
                 annotationForPin.coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
                 
+                print(pin.latitude, pin.longitude)
+                
                 self.mapView.addAnnotation(annotationForPin)
             }
         }
@@ -93,7 +98,22 @@ extension TravelLocationsViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         // Go to next vc
         coordinateTapped = (view.annotation?.coordinate)!
+        print(coordinateTapped)
+        //let fr = NSFetchRequest<Pin>(entityName: "Pin")
+        let pin: NSFetchRequest<Pin> = Pin.fetchRequest()
+        pin.predicate = NSPredicate(format: "latitude = \((coordinateTapped?.latitude)!)")
+        let fetchedEntities: [Pin] = try! context.fetch(pin)
+        //print(fetchedEntities.index(of: Pin(latitude: (coordinateTapped?.latitude)!, longitude: (coordinateTapped?.longitude)!, context: context)))
+        for ent in fetchedEntities {
+            print(ent.latitude, ent.longitude)
+        }
+        print(fetchedEntities.isEmpty)
+        
+        
+        
         performSegue(withIdentifier: "goToPhotoAlbum", sender: self)
+        
+        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
