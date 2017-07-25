@@ -112,6 +112,7 @@
 		43FCFE161F2552B100D854C9 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				43FCFE301F26B6A000D854C9 /* PhotoAlbumCollectionViewCell.swift */,
 				43FCFE011F251EAE00D854C9 /* Main.storyboard */,
 				43FCFE061F251EAE00D854C9 /* LaunchScreen.storyboard */,
 				43FCFE041F251EAE00D854C9 /* Assets.xcassets */,
@@ -125,7 +126,6 @@
 				43FCFDFD1F251EAE00D854C9 /* AppDelegate.swift */,
 				43FCFDFF1F251EAE00D854C9 /* TravelLocationsViewController.swift */,
 				43FCFE181F2554F500D854C9 /* PhotoAlbumViewController.swift */,
-				43FCFE301F26B6A000D854C9 /* PhotoAlbumCollectionViewCell.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";

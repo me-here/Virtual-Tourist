@@ -93,9 +93,23 @@ class BackgroundOps {
                 }
                 photosURLS.append(url)  // Add url to array
             }
-            print(photosURLS)
+            //print(photosURLS)
             completion(photosURLS, nil)
         })
+    }
+    
+    static func getPhoto(url: String, completionHandler: @escaping (Data?)->()) {
+        let baseURL = URL(string: url)!
+        let task = URLSession.shared.dataTask(with: baseURL) {
+            (data, response, error) in
+            if error == nil {
+                DispatchQueue.main.async {
+                    completionHandler(data)
+                }
+                
+            }
+        }
+        task.resume()
     }
     
 }
