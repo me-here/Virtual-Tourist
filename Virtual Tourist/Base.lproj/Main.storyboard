@@ -130,7 +130,11 @@
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="bFV-td-K95"/>
-                                    <barButtonItem title="New Collection" id="jEv-JG-8I8"/>
+                                    <barButtonItem title="New Collection" id="jEv-JG-8I8">
+                                        <connections>
+                                            <action selector="toolbarClicked:" destination="OpE-a1-EbD" id="Bgd-d9-zCM"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="evZ-xt-cE8"/>
                                 </items>
                             </toolbar>
@@ -155,8 +159,10 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="collectionView" destination="Skf-R9-zHm" id="a8G-Cw-RCF"/>
                         <outlet property="flowLayout" destination="pvg-TN-Ely" id="7Mx-hf-vLS"/>
                         <outlet property="smallMapView" destination="9Ue-jc-L8l" id="K7r-cv-w4H"/>
+                        <outlet property="toolbar" destination="jEv-JG-8I8" id="0wU-Bw-62J"/>
                     </connections>
                 </viewController>
             </objects>

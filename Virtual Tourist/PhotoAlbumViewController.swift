@@ -14,6 +14,8 @@ class PhotoAlbumViewController: UIViewController {
     @IBOutlet weak var smallMapView: MKMapView!
     var mapLocation: CLLocationCoordinate2D? = nil
     var pin: Pin? = nil
+    var numberOfItems = Constants.imagesPer
+    
     var context: NSManagedObjectContext {
         get{
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -26,8 +28,31 @@ class PhotoAlbumViewController: UIViewController {
 
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var toolbar: UIBarButtonItem!
+    @IBAction func toolbarClicked(_ sender: Any) {
+        if toolbar.title == "Remove Selected Pictures" {
+            if let deletionIndices = collectionView.indexPathsForSelectedItems {
+                numberOfItems -= deletionIndices.count
+                print(deletionIndices.count)
+                
+                collectionView.performBatchUpdates({
+                    self.collectionView.deleteItems(at: deletionIndices)
+                    // Delete Core Data items
+                }, completion: nil)
+                
+                
+            }
+        }else { // Add collection
+            print("Add collection")
+        }
+    
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        collectionView.allowsMultipleSelection = true
         
         let space: CGFloat = 5.0
         flowLayout.minimumInteritemSpacing = space
@@ -92,11 +117,20 @@ class PhotoAlbumViewController: UIViewController {
 
 extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Hey someone selected \(indexPath)")
+        //print("Hey someone selected \(indexPath)")
+        
+        collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .right)
+        
+        toolbar.title = "Remove Selected Pictures"
     }
     
+    
+    
+    
+    
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return Constants.imagesPer
+        return numberOfItems
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
