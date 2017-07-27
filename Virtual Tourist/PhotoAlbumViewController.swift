@@ -10,23 +10,15 @@ import UIKit
 import MapKit
 import CoreData
 
-class PhotoAlbumViewController: UIViewController {
+class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDelegate {
     @IBOutlet weak var smallMapView: MKMapView!
     var mapLocation: CLLocationCoordinate2D? = nil
     var pin: Pin? = nil
     var numberOfItems = Constants.imagesPer
-    var imagesToAdd = [#imageLiteral(resourceName: "placeholder")]
+    var urlArray = [String]()
     
+
     
-    var context: NSManagedObjectContext {
-        get{
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            guard let place = appDelegate.stack?.context else {
-                fatalError("Context not found.")
-            }
-            return place
-        }
-    }
 
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
@@ -36,6 +28,7 @@ class PhotoAlbumViewController: UIViewController {
         if toolbar.title == "Remove Selected Pictures" {
             if let deletionIndices = collectionView.indexPathsForSelectedItems {
                 numberOfItems -= deletionIndices.count
+                
                 print(deletionIndices.count)
                 
                 collectionView.performBatchUpdates({
@@ -47,6 +40,12 @@ class PhotoAlbumViewController: UIViewController {
             }
         }else { // Add collection
             numberOfItems = Constants.imagesPer
+            collectionView.performBatchUpdates({
+                self.pin?.photos?.removeAll()
+                self.numberOfItems = Constants.imagesPer
+                // TODO: Fix this
+            }, completion: nil)
+            
             print("New collection added")
         }
     
@@ -71,6 +70,27 @@ class PhotoAlbumViewController: UIViewController {
         smallMapView.isScrollEnabled = false
         smallMapView.isZoomEnabled = false
         
+        
+        BackgroundOps.getPhotos(latitude: (pin?.latitude)!, longitude: (pin?.longitude)!) { urlArray,error in
+            guard error == nil else {
+                print(error?.localizedDescription ?? "I don't know what happened.")
+                return
+            }
+            
+            guard let urlArray = urlArray, !urlArray.isEmpty else {
+                print("No urls")
+                return
+            }
+            
+            self.numberOfItems = urlArray.count
+            self.urlArray = urlArray    // URL array added
+            
+            
+            DispatchQueue.main.async{
+                self.collectionView.reloadData()
+            }
+        }
+
 
     }
     
@@ -89,25 +109,6 @@ class PhotoAlbumViewController: UIViewController {
             smallMapView.addAnnotation(mapAnnotation)   // Add our annotation
         }
         
-        BackgroundOps.getPhotos(latitude: (pin?.latitude)!, longitude: (pin?.longitude)!) { urlArray,error in
-                guard error == nil else {
-                    print(error?.localizedDescription ?? "I don't know what happened.")
-                    return
-                }
-                
-                guard let urlArray = urlArray, !urlArray.isEmpty else {
-                    print("No urls")
-                    return
-                }
-                
-                
-                self.numberOfItems = urlArray.count
-//                DispatchQueue.main.async {
-//                    self.collectionView.reloadData()
-//                }
-        
-        }
-    
     }
 
 }
@@ -128,75 +129,55 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print(numberOfItems)
         return numberOfItems
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoAlbumCollectionViewCell", for: indexPath) as! PhotoAlbumCollectionViewCell
+        cell.photo.image = #imageLiteral(resourceName: "placeholder")
         
-        if let empty = pin?.photos?.isEmpty, empty == true {    // Don't override things if they are already there
-            cell.photo.image = #imageLiteral(resourceName: "placeholder")
-            
-            BackgroundOps.getPhotos(latitude: (pin?.latitude)!, longitude: (pin?.longitude
-                )!, completion: { urlArray,error in
-                guard error == nil else {
-                    print(error?.localizedDescription ?? "I don't know what happened.")
-                    return
-                }
-
-                guard let urlArray = urlArray, !urlArray.isEmpty else {
-                    print("No urls")
-                    return
-                }
-                    
-
-                    self.numberOfItems = urlArray.count
-                    DispatchQueue.main.async {
-                        collectionView.reloadData()
-                    }
-                
-                    
-                // Instead of for, get element in pin.photos
-                BackgroundOps.getPhoto(url: urlArray[indexPath.row]) { data in
-                    guard data != nil else {
-                        print("Data is nil")
-                        return
-                    }
-                    print("yay!")
-                    let newPhoto = Photo(image: data!, context: self.context)   // Add to DB
-                    self.pin?.addToPhotos(newPhoto) // Connect photos to pin
-                    
-                    DispatchQueue.main.async {
+        
+        /*, (self.pin?.photos?.count)! - 1 > indexPath.row,*/
+        
+        pin?.photos
+        if let empty = self.pin?.photos?.isEmpty, empty == true {   // Is empty gets overrided after first cell
+            // No photos for given pin
+            print("HEY THERE ARENT ANY PHOTOS YET")
+            if self.urlArray.count > 0 {
+                // We can load some photos
+                BackgroundOps.getPhoto(url: self.urlArray[indexPath.row], completionHandler: { data in
+                    if data != nil {
                         cell.photo.image = UIImage(data: data!)
+                        //self.pin?.addToPhotos(Photo(image: data!, context: self.context))
+                        
                     }
-                    
-                    
-                }
-                    
-                
-            })
+                })
+            }else  {
+                // delete something
+            }
         }else {
-        // load from database
-            print("TRY")
-            guard self.numberOfItems > indexPath.row else { // Check something else
-                print("Out of range")
-                return cell
+            // load from DB
+            if numberOfItems >= indexPath.row {
+                // In DB
+                print(numberOfItems, urlArray.count, indexPath.row)
+                let startInd = (pin?.photos?.startIndex)!
+                
+                guard let ind = pin?.photos?.index(startInd, offsetBy: indexPath.row) else {
+                    return cell
+                }
+                
+                guard let photo = pin?.photos?[ind], photo.photo != nil else {
+                    print("nil photo")
+                    return cell
+                }
+                cell.photo.image = UIImage(data: photo.photo!)
+
+            }else {
+                // Not DB
+                print(urlArray.count, indexPath.row)
+                print("Not in DB")
             }
-            
-            let startInd = (pin?.photos?.startIndex)!
-            
-            guard let ind = pin?.photos?.index(startInd, offsetBy: indexPath.row) else {
-                return cell
-            }
-            
-            print(ind)
-            print(indexPath.row, numberOfItems) // numberOfItems isn't decreasing
-            print(pin?.photos?[ind])
-            guard let photo = pin?.photos?[ind], photo.photo != nil else {
-                print("nil photo")
-                return cell
-            }
-            cell.photo.image = UIImage(data: photo.photo!)
         }
         
         return cell

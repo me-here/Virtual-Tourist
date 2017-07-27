@@ -83,8 +83,10 @@ extension CoreDataStack {
             }
         }
         
-        let delayInNano = UInt64(delayInSeconds) * NSEC_PER_SEC
-        let deadline = DispatchTime.now() + Double(Int64(delayInNano)) / Double(NSEC_PER_SEC)
+//        let delayInNano = UInt64(delayInSeconds) * NSEC_PER_SEC
+//        let deadline = DispatchTime.now() + Double(Int64(delayInNano)) / Double(NSEC_PER_SEC)
+
+        let deadline = DispatchTime.now() + Double(delayInSeconds)
         
         DispatchQueue.main.asyncAfter(deadline: deadline) {
             self.autosave(delayInSeconds)
