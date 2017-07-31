@@ -40,7 +40,7 @@ class BackgroundOps {
         let baseURL = URL(string: requestURL)!
         var request = URLRequest(url: baseURL)
         request.httpMethod = requestType
-        request.timeoutInterval = 10
+        request.timeoutInterval = 5
         
         let task = URLSession.shared.dataTask(with: request, completionHandler: {(data, response, error) in
             guard error == nil, let bytesData = data else {

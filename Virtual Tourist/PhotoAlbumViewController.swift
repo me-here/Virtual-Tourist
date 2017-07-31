@@ -43,7 +43,7 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
             collectionView.performBatchUpdates({
                 self.pin?.photos?.removeAll()
                 self.numberOfItems = Constants.imagesPer
-                // TODO: Fix this
+                
             }, completion: nil)
             
             print("New collection added")
@@ -73,6 +73,8 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
         
         BackgroundOps.getPhotos(latitude: (pin?.latitude)!, longitude: (pin?.longitude)!) { urlArray,error in
             guard error == nil else {
+                self.displayError(subtitle: "Pin GET failure")
+                print("errr")
                 print(error?.localizedDescription ?? "I don't know what happened.")
                 return
             }
@@ -113,6 +115,19 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
 
 }
 
+extension PhotoAlbumViewController {
+    func displayError(title: String = "Network failure",subtitle: String, secondaryAction: UIAlertAction? = nil) {
+        let alert = UIAlertController(title: title, message: subtitle, preferredStyle: .alert)
+        alert.addAction(.init(title: "Ok.", style: .default) { _ in alert.dismiss(animated: true, completion: nil) })   // Add action to dismiss alert
+        if let secAction = secondaryAction {
+            alert.addAction(secAction)
+        }
+        DispatchQueue.main.async {
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+}
+
 
 extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -137,24 +152,17 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoAlbumCollectionViewCell", for: indexPath) as! PhotoAlbumCollectionViewCell
         cell.photo.image = #imageLiteral(resourceName: "placeholder")
         
-        
-        /*, (self.pin?.photos?.count)! - 1 > indexPath.row,*/
-        
-        pin?.photos
         if let empty = self.pin?.photos?.isEmpty, empty == true {   // Is empty gets overrided after first cell
             // No photos for given pin
-            print("HEY THERE ARENT ANY PHOTOS YET")
             if self.urlArray.count > 0 {
                 // We can load some photos
                 BackgroundOps.getPhoto(url: self.urlArray[indexPath.row], completionHandler: { data in
                     if data != nil {
                         cell.photo.image = UIImage(data: data!)
-                        //self.pin?.addToPhotos(Photo(image: data!, context: self.context))
+                        //self.pin?.addToPhotos(Photo(image: data!, context: self.context)) // we autosave so we don't have to do this anyways
                         
                     }
                 })
-            }else  {
-                // delete something
             }
         }else {
             // load from DB
