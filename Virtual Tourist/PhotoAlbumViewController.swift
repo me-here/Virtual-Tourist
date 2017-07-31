@@ -116,11 +116,13 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
 }
 
 extension PhotoAlbumViewController {
-    func displayError(title: String = "Network failure",subtitle: String, secondaryAction: UIAlertAction? = nil) {
+    func displayError(title: String = "Network failure",subtitle: String, secondaryHandler: (()->())? = nil) {
         let alert = UIAlertController(title: title, message: subtitle, preferredStyle: .alert)
         alert.addAction(.init(title: "Ok.", style: .default) { _ in alert.dismiss(animated: true, completion: nil) })   // Add action to dismiss alert
-        if let secAction = secondaryAction {
-            alert.addAction(secAction)
+        if let secAction = secondaryHandler {
+            alert.addAction(UIAlertAction(title: "Retry", style: UIAlertActionStyle.destructive) {_ in
+                secAction()
+            })
         }
         DispatchQueue.main.async {
             self.present(alert, animated: true, completion: nil)
@@ -131,17 +133,22 @@ extension PhotoAlbumViewController {
 
 extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //print("Hey someone selected \(indexPath)")
-        
-        collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .right)
-        
+        //collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .right)
+        grayCell(at: indexPath, amount: 0.5)
         toolbar.title = "Remove Selected Pictures"
     }
     
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        grayCell(at: indexPath, amount: 1.0)
+        if collectionView.indexPathsForSelectedItems?.count == 0 {
+            toolbar.title = "New Collection"
+        }
+    }
     
-    
-    
-    
+    func grayCell(at indexPath: IndexPath, amount: Double) {
+        let cell = collectionView.cellForItem(at: indexPath)
+        cell?.alpha = CGFloat(amount)
+    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         print(numberOfItems)
@@ -161,6 +168,12 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
                         cell.photo.image = UIImage(data: data!)
                         //self.pin?.addToPhotos(Photo(image: data!, context: self.context)) // we autosave so we don't have to do this anyways
                         
+                    }else {
+                        self.displayError(subtitle: "Could not GET Photo.") {
+                            DispatchQueue.main.async {
+                                collectionView.reloadData()
+                            }
+                        }
                     }
                 })
             }
