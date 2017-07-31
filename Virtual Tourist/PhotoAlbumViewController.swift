@@ -45,12 +45,33 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
         if toolbar.title == "Remove Selected Pictures" {
             if let deletionIndices = collectionView.indexPathsForSelectedItems {
                 numberOfItems -= deletionIndices.count
-                
+                numPhotos -= deletionIndices.count
                 print(deletionIndices.count)
+                
+                guard let photos = pin?.photos else {
+                    print("Photos")
+                    return
+                }
+                
+                var deletionsAsInts = [Int]()
+                
+                for i in deletionIndices {
+                    deletionsAsInts.append(i.row)
+                }
+                
+                for (index, photo) in photos.enumerated() {
+                    if deletionsAsInts.contains(index) {
+                        print("Deletion at \(index)")
+                        pin?.photos?.remove(photo)
+                    }
+                }
+                
+                
                 
                 collectionView.performBatchUpdates({
                     self.collectionView.deleteItems(at: deletionIndices)
                     // Delete Core Data items
+                    
                 }, completion: nil)
                 
                 
@@ -207,10 +228,9 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
             
         }else { // Photo is in DB so load it
             if numberOfItems >= indexPath.row {
-                print(pin?.photos?.count ?? 0, urlArray.count, indexPath.row)   // DEBUG
-                let startInd = (pin?.photos?.startIndex)!
+                let startInd = (pin?.photos?.startIndex)!   // Get start index in set
                 
-                guard let ind = pin?.photos?.index(startInd, offsetBy: indexPath.row) else {
+                guard let ind = pin?.photos?.index(startInd, offsetBy: indexPath.row) else {    // current photo's index
                     return cell
                 }
                 

@@ -81,7 +81,7 @@ class TravelLocationsViewController: UIViewController {
                 let annotationForPin = MKPointAnnotation()
                 annotationForPin.coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
                 
-                print(pin.latitude, pin.longitude)
+                
                 
                 self.mapView.addAnnotation(annotationForPin)
             }
