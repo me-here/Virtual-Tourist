@@ -17,6 +17,15 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
     var numberOfItems = Constants.imagesPer
     var urlArray = [String]()
     
+    var context: NSManagedObjectContext {
+        get{
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            guard let place = appDelegate.stack?.context else {
+                fatalError("Context not found.")
+            }
+            return place
+        }
+    }
 
     
 
@@ -151,22 +160,25 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print(numberOfItems)
-        return numberOfItems
+        print(urlArray.count, "hiiooo")
+        return urlArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoAlbumCollectionViewCell", for: indexPath) as! PhotoAlbumCollectionViewCell
-        cell.photo.image = #imageLiteral(resourceName: "placeholder")
+        //cell.photo.image = #imageLiteral(resourceName: "placeholder")
         
-        if let empty = self.pin?.photos?.isEmpty, empty == true {   // Is empty gets overrided after first cell
-            // No photos for given pin
-            if self.urlArray.count > 0 {
-                // We can load some photos
+        if let empty = self.pin?.photos?.isEmpty, empty == true {
+            cell.photo.image = #imageLiteral(resourceName: "placeholder")
+            
+        }
+        
+        
+        if (self.pin?.photos?.count)! <= urlArray.count && urlArray.count > 0 {   // If photo isn't in DB
                 BackgroundOps.getPhoto(url: self.urlArray[indexPath.row], completionHandler: { data in
                     if data != nil {
-                        cell.photo.image = UIImage(data: data!)
-                        //self.pin?.addToPhotos(Photo(image: data!, context: self.context)) // we autosave so we don't have to do this anyways
+                        cell.photo.image = UIImage(data: data!) // Set cell's image
+                        self.pin?.addToPhotos(Photo(image: data!, context: self.context)) // add photo in relationship
                         
                     }else {
                         self.displayError(subtitle: "Could not GET Photo.") {
@@ -176,12 +188,10 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
                         }
                     }
                 })
-            }
-        }else {
-            // load from DB
+            
+        }else { // Photo is in DB so load it
             if numberOfItems >= indexPath.row {
-                // In DB
-                print(numberOfItems, urlArray.count, indexPath.row)
+                print(pin?.photos?.count ?? 0, urlArray.count, indexPath.row)   // DEBUG
                 let startInd = (pin?.photos?.startIndex)!
                 
                 guard let ind = pin?.photos?.index(startInd, offsetBy: indexPath.row) else {

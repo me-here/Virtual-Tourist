@@ -72,7 +72,6 @@
         <!--Title-->
         <scene sceneID="10Q-Sh-jOZ">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="mM7-CR-Wwg" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="photoAlbum" id="OpE-a1-EbD" customClass="PhotoAlbumViewController" customModule="Virtual_Tourist" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="EL0-O9-yxO"/>
@@ -165,8 +164,9 @@
                         <outlet property="toolbar" destination="jEv-JG-8I8" id="0wU-Bw-62J"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mM7-CR-Wwg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-149.5" y="850.5"/>
+            <point key="canvasLocation" x="-149.59999999999999" y="849.62518740629696"/>
         </scene>
     </scenes>
 </document>
