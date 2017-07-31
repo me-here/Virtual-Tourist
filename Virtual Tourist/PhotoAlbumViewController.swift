@@ -36,6 +36,8 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
             pin?.numberOfPhotos = Int16(newValue)
         }
     }
+    
+    var flickrPage = 1
 
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
@@ -52,18 +54,22 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
                     self.collectionView.deleteItems(at: deletionIndices)
                     // Delete Core Data items
                     
-                }, completion: nil)
+                }, completion: { _ in
+                    self.toolbar.title = "Add Collection"
+                })
                 
                 
             }
         }else { // Add collection
-            numberOfItems = Constants.imagesPer
+            /*numberOfItems = Constants.imagesPer
+            self.numPhotos = Constants.imagesPer
+            
             collectionView.performBatchUpdates({
                 self.pin?.photos?.removeAll()
-                self.numberOfItems = Constants.imagesPer
-                
             }, completion: nil)
-            
+            */
+            flickrPage += 1
+            getPhotosUrls(page: flickrPage)
             print("New collection added")
         }
     
@@ -89,14 +95,14 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
         smallMapView.isZoomEnabled = false
         
         if numPhotos == 0 {
-            getPhotosUrls()
+            getPhotosUrls(page: flickrPage)
         }
 
 
     }
     
-    func getPhotosUrls() {
-        BackgroundOps.getPhotos(latitude: (pin?.latitude)!, longitude: (pin?.longitude)!) { urlArray,error in
+    func getPhotosUrls(page: Int) {
+        BackgroundOps.getPhotos(latitude: (pin?.latitude)!, longitude: (pin?.longitude)!, page: page) { urlArray,error in
             guard error == nil else {
                 self.displayError(subtitle: "Pin GET failure")
                 print("errr")
@@ -175,9 +181,7 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //print(urlArray.count, "hiiooo")
-        //return urlArray.count
-        print(numPhotos, "HIIIIIIIOOOO")
+        print("\(numPhotos) URLs expected.")
         return numPhotos
     }
     

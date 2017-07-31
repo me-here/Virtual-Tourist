@@ -70,8 +70,8 @@ class BackgroundOps {
     
 
 
-    static func getPhotos(latitude: Double, longitude: Double, completion: @escaping ([String]?, Error?) -> ()) {
-        let getPhotosURL = "\(Constants.FlickrBaseURL)method=\(Constants.flickrGetPhotos)&api_key=\(Constants.apiKEY)&lat=\(latitude)&lon=\(longitude)&extras=\(Constants.urlFormat)&per_page=\(Constants.imagesPer)&format=\(Constants.format)&nojsoncallback=\(Constants.noJSONCallback)"
+    static func getPhotos(latitude: Double, longitude: Double, page: Int, completion: @escaping ([String]?, Error?) -> ()) {
+        let getPhotosURL = "\(Constants.FlickrBaseURL)method=\(Constants.flickrGetPhotos)&api_key=\(Constants.apiKEY)&page=\(page)&lat=\(latitude)&lon=\(longitude)&extras=\(Constants.urlFormat)&per_page=\(Constants.imagesPer)&format=\(Constants.format)&nojsoncallback=\(Constants.noJSONCallback)"
         print(getPhotosURL)
         print(latitude, longitude)
         
