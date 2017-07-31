@@ -48,26 +48,6 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
                 numPhotos -= deletionIndices.count
                 print(deletionIndices.count)
                 
-                guard let photos = pin?.photos else {
-                    print("Photos")
-                    return
-                }
-                
-                var deletionsAsInts = [Int]()
-                
-                for i in deletionIndices {
-                    deletionsAsInts.append(i.row)
-                }
-                
-                for (index, photo) in photos.enumerated() {
-                    if deletionsAsInts.contains(index) {
-                        print("Deletion at \(index)")
-                        pin?.photos?.remove(photo)
-                    }
-                }
-                
-                
-                
                 collectionView.performBatchUpdates({
                     self.collectionView.deleteItems(at: deletionIndices)
                     // Delete Core Data items
