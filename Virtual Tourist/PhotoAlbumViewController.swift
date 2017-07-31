@@ -27,7 +27,15 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
         }
     }
 
-    
+    var numPhotos: Int {
+        get {
+            let urlsCount = pin?.numberOfPhotos
+            return Int(urlsCount!)
+        }
+        set {
+            pin?.numberOfPhotos = Int16(newValue)
+        }
+    }
 
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
@@ -79,7 +87,14 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
         smallMapView.isScrollEnabled = false
         smallMapView.isZoomEnabled = false
         
-        
+        if numPhotos == 0 {
+            getPhotosUrls()
+        }
+
+
+    }
+    
+    func getPhotosUrls() {
         BackgroundOps.getPhotos(latitude: (pin?.latitude)!, longitude: (pin?.longitude)!) { urlArray,error in
             guard error == nil else {
                 self.displayError(subtitle: "Pin GET failure")
@@ -93,6 +108,7 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
                 return
             }
             
+            self.numPhotos = urlArray.count
             self.numberOfItems = urlArray.count
             self.urlArray = urlArray    // URL array added
             
@@ -101,8 +117,6 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
                 self.collectionView.reloadData()
             }
         }
-
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -160,8 +174,10 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print(urlArray.count, "hiiooo")
-        return urlArray.count
+        //print(urlArray.count, "hiiooo")
+        //return urlArray.count
+        print(numPhotos, "HIIIIIIIOOOO")
+        return numPhotos
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
