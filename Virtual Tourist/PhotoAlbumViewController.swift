@@ -64,16 +64,15 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
                 
             }
         }else { // Add collection
-            /*numberOfItems = Constants.imagesPer
-            self.numPhotos = Constants.imagesPer
-            
+            flickrPage += 1
             collectionView.performBatchUpdates({
                 self.pin?.photos?.removeAll()
-            }, completion: nil)
-            */
-            flickrPage += 1
-            getPhotosUrls(page: flickrPage)
-            print("New collection added")
+                self.numPhotos = 0
+                self.getPhotosUrls(page: self.flickrPage)
+            }, completion: {_ in
+                self.collectionView.reloadData()
+            })
+
         }
     
     }
@@ -161,6 +160,16 @@ extension PhotoAlbumViewController {
             self.present(alert, animated: true, completion: nil)
         }
     }
+    
+    func singleShotSave(_ delayInSeconds: Int) {
+        let deadline = DispatchTime.now() + Double(delayInSeconds)
+        
+        DispatchQueue.main.asyncAfter(deadline: deadline) {
+            BackgroundOps.immediateSave(context: self.context)
+            print("Single shot saved")
+        }
+    }
+
 }
 
 
@@ -185,6 +194,7 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         print("\(numPhotos) URLs expected.")
+        singleShotSave(5)   // 5 seconds should be plenty of time for the cells to load so we have one I/O save each time
         return numPhotos
     }
     

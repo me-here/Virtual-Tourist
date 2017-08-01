@@ -116,6 +116,7 @@ class BackgroundOps {
         if context.hasChanges { // Just to be safe and minimize I/O
             do {
                 try context.save()
+                print("Save")
             } catch {
                 print("Some error with save")
             }

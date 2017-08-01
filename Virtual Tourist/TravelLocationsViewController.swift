@@ -28,7 +28,8 @@ class TravelLocationsViewController: UIViewController {
     
     
     @IBAction func longPress(_ sender: Any) {
-        if pressDetector[0].state == UIGestureRecognizerState.began {   // When our finger is there, not lifted
+        let state = pressDetector[0].state
+        if state == .began {   // When our finger is there, not lifted
             print("Felt a long press.")
             let screenRelativeLoc = pressDetector[0].location(in: mapView)
             let coordinate = mapView.convert(screenRelativeLoc, toCoordinateFrom: mapView)
@@ -56,6 +57,13 @@ class TravelLocationsViewController: UIViewController {
             }
             
         }
+//        else if state == .changed {
+//            //coordinateTapped = CLLocationCoordinate2D(latitude: pressDetector, longitude: <#T##CLLocationDegrees#>)
+//        }
+//        else if state == .ended {
+//        
+//        }
+        
     }
     
     

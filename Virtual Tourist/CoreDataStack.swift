@@ -71,7 +71,7 @@ extension CoreDataStack {
             try context.save()
         }
     }
-    
+    /*
     func autosave(_ delayInSeconds: Int) {
         if delayInSeconds > 0 {
             do {
@@ -91,6 +91,6 @@ extension CoreDataStack {
         DispatchQueue.main.asyncAfter(deadline: deadline) {
             self.autosave(delayInSeconds)
         }
-    }
+    }*/
 
 }
