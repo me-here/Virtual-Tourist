@@ -49,16 +49,7 @@ class TravelLocationsViewController: UIViewController {
             annotationView.animatesDrop = true
             
             _ = Pin(latitude: roundLat, longitude: roundLon, context: context)
-            
-            
-            
-            do {
-                try context.save()
-                print("NEW PIN ADDED!!!")
-            }catch {
-                print("database err")
-            }
-            
+            BackgroundOps.immediateSave(context: context)
             
             DispatchQueue.main.async {
                 self.mapView.addAnnotation(annotation)

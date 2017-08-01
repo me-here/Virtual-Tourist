@@ -33,7 +33,9 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
             return Int(urlsCount!)
         }
         set {
-            pin?.numberOfPhotos = Int16(newValue)
+            context.perform {
+                self.pin?.numberOfPhotos = Int16(newValue)
+            }
         }
     }
     
@@ -55,6 +57,7 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
                     // Delete Core Data items
                     
                 }, completion: { _ in
+                    BackgroundOps.immediateSave(context: self.context)
                     self.toolbar.title = "Add Collection"
                 })
                 
@@ -193,7 +196,6 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
             cell.photo.image = #imageLiteral(resourceName: "placeholder")
             
         }
-        
         
         if (self.pin?.photos?.count)! <= urlArray.count && urlArray.count > 0 {   // If photo isn't in DB
                 BackgroundOps.getPhoto(url: self.urlArray[indexPath.row], completionHandler: { data in

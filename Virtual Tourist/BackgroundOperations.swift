@@ -112,4 +112,14 @@ class BackgroundOps {
         task.resume()
     }
     
+    static func immediateSave(context: NSManagedObjectContext) {
+        if context.hasChanges { // Just to be safe and minimize I/O
+            do {
+                try context.save()
+            } catch {
+                print("Some error with save")
+            }
+        }
+    }
+    
 }
