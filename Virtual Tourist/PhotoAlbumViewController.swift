@@ -48,19 +48,15 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
     @IBAction func toolbarClicked(_ sender: Any) {
         if toolbar.title == "Remove Selected Pictures" {
             if let deletionIndices = collectionView.indexPathsForSelectedItems {
-                numberOfItems -= deletionIndices.count
-                numPhotos -= deletionIndices.count
-                print(deletionIndices.count)
+                                print(deletionIndices.count)
                 
-                collectionView.performBatchUpdates({
+                self.numberOfItems -= deletionIndices.count
+                self.numPhotos -= deletionIndices.count
+                DispatchQueue.main.async {
                     self.collectionView.deleteItems(at: deletionIndices)
-                    // Delete Core Data items
-                    
-                }, completion: { _ in
-                    BackgroundOps.immediateSave(context: self.context)
-                    self.toolbar.title = "Add Collection"
-                })
-                
+                }
+                self.toolbar.title = "Add Collection"
+                                
                 
             }
         }else { // Add collection
@@ -70,6 +66,7 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
                 self.numPhotos = 0
                 self.getPhotosUrls(page: self.flickrPage)
             }, completion: {_ in
+                BackgroundOps.immediateSave(context: self.context)
                 self.collectionView.reloadData()
             })
 
@@ -96,7 +93,7 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
         smallMapView.isScrollEnabled = false
         smallMapView.isZoomEnabled = false
         
-        if numPhotos == 0 {
+        if numPhotos == 0 || numPhotos > (self.pin?.photos?.count)! {
             getPhotosUrls(page: flickrPage)
         }
 
@@ -207,7 +204,8 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
             
         }
         
-        if (self.pin?.photos?.count)! <= urlArray.count && urlArray.count > 0 {   // If photo isn't in DB
+        if (self.pin?.photos?.count)! <= numPhotos && numPhotos > 0 && !self.urlArray.isEmpty{   // If photo isn't in DB
+            //print(numPhotos, self.pin?.photos?.count)
                 BackgroundOps.getPhoto(url: self.urlArray[indexPath.row], completionHandler: { data in
                     if data != nil {
                         cell.photo.image = UIImage(data: data!) // Set cell's image
@@ -229,7 +227,8 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
                 guard let ind = pin?.photos?.index(startInd, offsetBy: indexPath.row) else {    // current photo's index
                     return cell
                 }
-                
+//                print(ind)
+//                pin?.photos[ind]
                 guard let photo = pin?.photos?[ind], photo.photo != nil else {
                     print("nil photo")
                     return cell
