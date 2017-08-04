@@ -4,3 +4,5 @@ This app enables you to explore the world via the comfort of your home, or where
 Using the Flickr API, it can show you pictures of tapped places.
 
 It also stores these photos persistently, so you can continue your photo viewing even when you don't have internet connection.
+
+![Virtual Tourist image missing!](virtual-tourist-screenshot.png)
