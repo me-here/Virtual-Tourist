@@ -1,6 +1,8 @@
 # Virtual-Tourist
 This app enables you to explore the world via the comfort of your home, or wherever you are.
 
+[![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com)
+
 ## Some features
 Using a component of the Flickr API, [flickr.photos.search](https://www.flickr.com/services/api/flickr.photos.search.html), it can show you pictures of tapped places.
 
