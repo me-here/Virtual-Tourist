@@ -21,6 +21,7 @@ class TravelLocationsViewController: UIViewController {
             guard let place = appDelegate.stack?.context else {
                 fatalError("Context not found.")
             }
+            
             return place
         }
     }
@@ -73,8 +74,6 @@ class TravelLocationsViewController: UIViewController {
                 let annotationForPin = MKPointAnnotation()
                 annotationForPin.coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
                 
-                
-                
                 self.mapView.addAnnotation(annotationForPin)
             }
         }
@@ -89,7 +88,6 @@ extension TravelLocationsViewController: MKMapViewDelegate {
         let annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "TravelAnnotationView")
         annotationView.animatesDrop = true
         
-        
         return annotationView
     }
     
@@ -99,6 +97,7 @@ extension TravelLocationsViewController: MKMapViewDelegate {
             print("Invalid coordinates")
             return
         }
+        
         self.coordinateTapped = coordinateTapped
         
         // Check for latitude and longitude
