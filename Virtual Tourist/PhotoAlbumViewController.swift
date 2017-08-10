@@ -48,12 +48,19 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
     @IBAction func toolbarClicked(_ sender: Any) {
         if toolbar.title == "Remove Selected Pictures" {
             if let deletionIndices = collectionView.indexPathsForSelectedItems {
-                                print(deletionIndices.count)
+                //                print(deletionIndices.count)
                 
                 self.numberOfItems -= deletionIndices.count
                 self.numPhotos -= deletionIndices.count
+                
                 DispatchQueue.main.async {
+                    for index in deletionIndices {
+                        let remIndex = self.pin?.photos?.index((self.pin?.photos?.startIndex)!, offsetBy: index.row)
+                        self.pin?.photos?.remove(at: remIndex!)
+                    }
+                    
                     self.collectionView.deleteItems(at: deletionIndices)
+                    
                 }
                 self.toolbar.title = "Add Collection"
                                 
