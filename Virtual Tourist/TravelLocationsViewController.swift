@@ -57,13 +57,6 @@ class TravelLocationsViewController: UIViewController {
             }
             
         }
-//        else if state == .changed {
-//            //coordinateTapped = CLLocationCoordinate2D(latitude: pressDetector, longitude: <#T##CLLocationDegrees#>)
-//        }
-//        else if state == .ended {
-//        
-//        }
-        
     }
     
     
@@ -128,10 +121,12 @@ extension TravelLocationsViewController: MKMapViewDelegate {
     
     }
     
+    func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
+        mapView.deselectAnnotation(view.annotation, animated: true)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToPhotoAlbum" {
-            // Tell the vc stuff
-            // TODO: Make other vc's class
             let destination = segue.destination as! PhotoAlbumViewController
             if let loc = coordinateTapped {
                 destination.mapLocation = loc
