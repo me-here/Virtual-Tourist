@@ -63,14 +63,14 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
                     
                 }
                 self.toolbar.title = "Add Collection"
-                                
                 
             }
         }else { // Add collection
             flickrPage += 1
+            self.pin?.photos?.removeAll()
+            self.numPhotos = 0
             collectionView.performBatchUpdates({
-                self.pin?.photos?.removeAll()
-                self.numPhotos = 0
+
                 self.getPhotosUrls(page: self.flickrPage)
             }, completion: {_ in
                 BackgroundOps.immediateSave(context: self.context)
@@ -229,6 +229,9 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
             
         }else { // Photo is in DB so load it
             if numberOfItems >= indexPath.row {
+                guard pin?.photos?.count != 0 else {
+                    return cell
+                }
                 let startInd = (pin?.photos?.startIndex)!   // Get start index in set
                 
                 guard let ind = pin?.photos?.index(startInd, offsetBy: indexPath.row) else {    // current photo's index
@@ -236,6 +239,7 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
                 }
 //                print(ind)
 //                pin?.photos[ind]
+                
                 guard let photo = pin?.photos?[ind], photo.photo != nil else {
                     print("nil photo")
                     return cell
