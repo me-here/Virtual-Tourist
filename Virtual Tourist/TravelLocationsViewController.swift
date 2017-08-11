@@ -92,6 +92,11 @@ extension TravelLocationsViewController: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        defer {
+            DispatchQueue.main.async {
+                mapView.deselectAnnotation(view.annotation, animated: true)
+            }
+        }
         // Go to next vc
         guard let coordinateTapped = view.annotation?.coordinate else {
             print("Invalid coordinates")
@@ -118,10 +123,6 @@ extension TravelLocationsViewController: MKMapViewDelegate {
             self.performSegue(withIdentifier: "goToPhotoAlbum", sender: self)
         }
     
-    }
-    
-    func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
-        mapView.deselectAnnotation(view.annotation, animated: true)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
