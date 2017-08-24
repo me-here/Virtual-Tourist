@@ -23,10 +23,13 @@ struct CoreDataStack {
         }
         self.modelURL = modelURL
         
-        guard let model = NSManagedObjectModel(contentsOf: modelURL) else {
-            print("Couldn't create a model from the url: \(modelURL)")
-            return nil
-        }
+        //guard let model = NSManagedObjectModel(contentsOf: modelURL) else {
+        //    print("Couldn't create a model from the url: \(modelURL)")
+        //    return nil
+        //}
+        
+        let model = NSManagedObjectModel(contentsOf: modelURL)
+        
         self.model = model
         
         coordinator = NSPersistentStoreCoordinator(managedObjectModel: model)
@@ -71,7 +74,7 @@ extension CoreDataStack {
             try context.save()
         }
     }
-    /*
+    
     func autosave(_ delayInSeconds: Int) {
         if delayInSeconds > 0 {
             do {
@@ -91,6 +94,6 @@ extension CoreDataStack {
         DispatchQueue.main.asyncAfter(deadline: deadline) {
             self.autosave(delayInSeconds)
         }
-    }*/
+    }
 
 }

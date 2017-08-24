@@ -53,11 +53,21 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
                 self.numberOfItems -= deletionIndices.count
                 self.numPhotos -= deletionIndices.count
                 
+                guard let pics = self.pin?.photos else {return}
+                
                 DispatchQueue.main.async {
+                    for (index,photo) in pics.enumerated() {
+                        if deletionIndices.contains(IndexPath(item: index, section: 0)) {   // We should delete this photo
+                            self.context.delete(photo)
+                            
+                        }
+                    }
+                    /*
                     for index in deletionIndices {
                         let remIndex = self.pin?.photos?.index((self.pin?.photos?.startIndex)!, offsetBy: index.row)
+                        context.delete(self.pin?.photos.at)
                         self.pin?.photos?.remove(at: remIndex!)
-                    }
+                    }*/
                     
                     self.collectionView.deleteItems(at: deletionIndices)
                     
