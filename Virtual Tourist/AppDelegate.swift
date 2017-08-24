@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         //  try! stack?.dropAllData() // FOR DEBUGGING ONLY
-        stack?.autosave(10)
+        stack?.autosave(5)
         return true
     }
 }
