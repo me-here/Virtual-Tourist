@@ -28,8 +28,6 @@ struct CoreDataStack {
             return nil
         }
         
-        //let model = NSManagedObjectModel(contentsOf: modelURL)
-        
         self.model = model
         
         coordinator = NSPersistentStoreCoordinator(managedObjectModel: model)
@@ -85,9 +83,6 @@ extension CoreDataStack {
                 print("Error with save")
             }
         }
-        
-//        let delayInNano = UInt64(delayInSeconds) * NSEC_PER_SEC
-//        let deadline = DispatchTime.now() + Double(Int64(delayInNano)) / Double(NSEC_PER_SEC)
 
         let deadline = DispatchTime.now() + Double(delayInSeconds)
         

@@ -55,30 +55,30 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
                 
                 guard let pics = self.pin?.photos else {return}
                 
-                DispatchQueue.main.async {
-                    for (index,photo) in pics.enumerated() {
-                        if deletionIndices.contains(IndexPath(item: index, section: 0)) {   // We should delete this photo
+                
+                for (index,photo) in pics.enumerated() {
+                    if deletionIndices.contains(IndexPath(item: index, section: 0)) {   // delete this photo
+                        DispatchQueue.main.async {  // Core Data I/O on main (context created on main)
                             self.context.delete(photo)
-                            
                         }
                     }
-                    /*
-                    for index in deletionIndices {
-                        let remIndex = self.pin?.photos?.index((self.pin?.photos?.startIndex)!, offsetBy: index.row)
-                        context.delete(self.pin?.photos.at)
-                        self.pin?.photos?.remove(at: remIndex!)
-                    }*/
-                    
-                    self.collectionView.deleteItems(at: deletionIndices)
-                    
                 }
+                
+                DispatchQueue.main.async {  // UI related work
+                    self.collectionView.deleteItems(at: deletionIndices)
+                }
+                
                 self.toolbar.title = "Add Collection"
                 
             }
         }else { // Add collection
             flickrPage += 1
-            self.pin?.photos?.removeAll()
-            self.numPhotos = 0
+            //context.delete(pin?.photos)
+            pin?.photos?.removeAll()
+            
+            
+            
+            numPhotos = 0
             collectionView.performBatchUpdates({
 
                 self.getPhotosUrls(page: self.flickrPage)
