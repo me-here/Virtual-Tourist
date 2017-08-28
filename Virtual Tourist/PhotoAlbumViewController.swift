@@ -187,13 +187,14 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
         
         if let empty = self.pin?.photos?.isEmpty, empty == true {
             cell.photo.image = #imageLiteral(resourceName: "placeholder")
-            
+            cell.activityIndicator.startAnimating()
         }
         
         if (self.pin?.photos?.count)! <= numPhotos && numPhotos > 0 && !self.urlArray.isEmpty{   // If photo isn't in DB
                 BackgroundOps.getPhoto(url: self.urlArray[indexPath.row], completionHandler: { data in
                     if data != nil {
                         cell.photo.image = UIImage(data: data!) // Set cell's image
+                        cell.activityIndicator.stopAnimating()
                         self.pin?.addToPhotos(Photo(image: data!, context: self.context)) // add photo in relationship
                         
                     }else {

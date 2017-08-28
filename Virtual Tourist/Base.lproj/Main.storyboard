@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="FNL-eV-fEf">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="FNL-eV-fEf">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -107,15 +107,21 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mnk-KL-dyF">
                                                     <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                                 </imageView>
+                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Qrd-Cw-GaO">
+                                                    <rect key="frame" x="40" y="40" width="20" height="20"/>
+                                                </activityIndicatorView>
                                             </subviews>
                                         </view>
                                         <constraints>
+                                            <constraint firstItem="Qrd-Cw-GaO" firstAttribute="centerX" secondItem="mdk-SW-dE6" secondAttribute="centerX" id="CMe-Ic-jpV"/>
                                             <constraint firstItem="mnk-KL-dyF" firstAttribute="centerY" secondItem="mdk-SW-dE6" secondAttribute="centerY" id="I0x-u6-7Gq"/>
+                                            <constraint firstItem="Qrd-Cw-GaO" firstAttribute="centerY" secondItem="mdk-SW-dE6" secondAttribute="centerY" id="MwM-Uz-gYv"/>
                                             <constraint firstItem="mnk-KL-dyF" firstAttribute="centerX" secondItem="mdk-SW-dE6" secondAttribute="centerX" id="i5W-1o-FHc"/>
                                             <constraint firstItem="mnk-KL-dyF" firstAttribute="height" secondItem="mdk-SW-dE6" secondAttribute="height" id="kiV-CF-X0J"/>
                                             <constraint firstItem="mnk-KL-dyF" firstAttribute="width" secondItem="mdk-SW-dE6" secondAttribute="width" id="pce-wj-OJd"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="activityIndicator" destination="Qrd-Cw-GaO" id="5mo-6V-U14"/>
                                             <outlet property="photo" destination="mnk-KL-dyF" id="XPv-W8-lXg"/>
                                         </connections>
                                     </collectionViewCell>
