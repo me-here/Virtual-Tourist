@@ -10,12 +10,22 @@ import UIKit
 import MapKit
 import CoreData
 
+struct ToolbarTitle {
+    static let remove = "Remove Selected Pictures"
+    static let add = "Add Collection"
+}
+
 class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDelegate {
     @IBOutlet weak var smallMapView: MKMapView!
+    @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var toolbar: UIBarButtonItem!
+
     var mapLocation: CLLocationCoordinate2D? = nil
     var pin: Pin? = nil
     var numberOfItems = Constants.imagesPer
     var urlArray = [String]()
+    var flickrPage = 1
     
     var context: NSManagedObjectContext {
         get{
@@ -38,60 +48,7 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
             }
         }
     }
-    
-    var flickrPage = 1
 
-    @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
-    
-    @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var toolbar: UIBarButtonItem!
-    @IBAction func toolbarClicked(_ sender: Any) {
-        if toolbar.title == "Remove Selected Pictures" {
-            if let deletionIndices = collectionView.indexPathsForSelectedItems {
-                //                print(deletionIndices.count)
-                
-                self.numberOfItems -= deletionIndices.count
-                self.numPhotos -= deletionIndices.count
-                
-                guard let pics = self.pin?.photos else {return}
-                
-                
-                for (index,photo) in pics.enumerated() {
-                    if deletionIndices.contains(IndexPath(item: index, section: 0)) {   // delete this photo
-                        DispatchQueue.main.async {  // Core Data I/O on main (context created on main)
-                            self.context.delete(photo)
-                        }
-                    }
-                }
-                
-                DispatchQueue.main.async {  // UI related work
-                    self.collectionView.deleteItems(at: deletionIndices)
-                }
-                
-                self.toolbar.title = "Add Collection"
-                
-            }
-        }else { // Add collection
-            flickrPage += 1
-            //context.delete(pin?.photos)
-            pin?.photos?.removeAll()
-            
-            
-            
-            numPhotos = 0
-            collectionView.performBatchUpdates({
-
-                self.getPhotosUrls(page: self.flickrPage)
-            }, completion: {_ in
-                BackgroundOps.immediateSave(context: self.context)
-                self.collectionView.reloadData()
-            })
-
-        }
-    
-    }
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -102,8 +59,8 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
         flowLayout.minimumLineSpacing = space
         
         let numberOfColumns: CGFloat = 3.0
-        let width = (self.view.frame.size.width - (2 * space))/numberOfColumns
-        let height = (self.view.frame.size.height - (2 * space))/space
+        let width = (view.frame.size.width - (2 * space))/numberOfColumns
+        let height = (view.frame.size.height - (2 * space))/space
         flowLayout.itemSize = CGSize(width: width, height: height)
         
         // Settings
@@ -146,7 +103,6 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
         super.viewWillAppear(animated)
         // Map settings
         if let pointLoc = mapLocation {
-            //smallMapView.setCenter(mapLocation!, animated: false)
             var region = MKCoordinateRegion()
             region.center = pointLoc
             region.span = MKCoordinateSpan(latitudeDelta: 1, longitudeDelta: 1)
@@ -158,7 +114,22 @@ class PhotoAlbumViewController: UIViewController, NSFetchedResultsControllerDele
         }
         
     }
-
+    
+    @IBAction func toolbarClicked(_ sender: Any) {
+        guard let pics = self.pin?.photos else {return}
+        if toolbar.title == ToolbarTitle.remove {
+            guard let deletionIndices = collectionView.indexPathsForSelectedItems else {return}
+            self.numberOfItems -= deletionIndices.count
+            self.numPhotos -= deletionIndices.count
+            deletePhotosWith(pics, deletionIndices: deletionIndices)
+            self.toolbar.title = ToolbarTitle.add
+        }else { // Add collection
+            flickrPage += 1
+            getNewPhotos()
+            deletePhotosWith(pics)
+        }
+        
+    }
 }
 
 extension PhotoAlbumViewController {
@@ -189,7 +160,6 @@ extension PhotoAlbumViewController {
 
 extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .right)
         grayCell(at: indexPath, amount: 0.5)
         toolbar.title = "Remove Selected Pictures"
     }
@@ -214,7 +184,6 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoAlbumCollectionViewCell", for: indexPath) as! PhotoAlbumCollectionViewCell
-        //cell.photo.image = #imageLiteral(resourceName: "placeholder")
         
         if let empty = self.pin?.photos?.isEmpty, empty == true {
             cell.photo.image = #imageLiteral(resourceName: "placeholder")
@@ -222,7 +191,6 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
         }
         
         if (self.pin?.photos?.count)! <= numPhotos && numPhotos > 0 && !self.urlArray.isEmpty{   // If photo isn't in DB
-            //print(numPhotos, self.pin?.photos?.count)
                 BackgroundOps.getPhoto(url: self.urlArray[indexPath.row], completionHandler: { data in
                     if data != nil {
                         cell.photo.image = UIImage(data: data!) // Set cell's image
@@ -247,8 +215,6 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
                 guard let ind = pin?.photos?.index(startInd, offsetBy: indexPath.row) else {    // current photo's index
                     return cell
                 }
-//                print(ind)
-//                pin?.photos[ind]
                 
                 guard let photo = pin?.photos?[ind], photo.photo != nil else {
                     print("nil photo")
@@ -266,3 +232,39 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
         return cell
     }
 }
+
+extension PhotoAlbumViewController {
+    func deletePhotosWith(_ pics: Set<Photo>, deletionIndices: [IndexPath]) {
+        // Delete from Core Data
+        for (index,photo) in pics.enumerated() {
+            if deletionIndices.contains(IndexPath(item: index, section: 0)) {   // delete this photo
+                DispatchQueue.main.async {  // Core Data I/O on main (context created on main)
+                    self.context.delete(photo)
+                }
+            }
+        }
+        
+        // Delete from UI
+        DispatchQueue.main.async {
+            self.collectionView.deleteItems(at: deletionIndices)
+        }
+    }
+    
+    func deletePhotosWith(_ pics: Set<Photo>) {
+        for photo in pics { // remove all previous photos
+            context.delete(photo)
+        }
+        numPhotos = 0
+    }
+    
+    func getNewPhotos() {
+        collectionView.performBatchUpdates({
+            self.getPhotosUrls(page: self.flickrPage)   // get new photos
+        }, completion: {_ in
+            BackgroundOps.immediateSave(context: self.context)  // save
+            self.collectionView.reloadData()    // reload
+        })
+    }
+}
+
+
