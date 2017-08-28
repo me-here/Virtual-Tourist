@@ -12,31 +12,25 @@ import CoreData
 class BackgroundOps {
     // getDBItems can be synchronous because it just makes the fetch request (a quick operation)
     static func getDBItems(context: NSManagedObjectContext, predicate: NSPredicate? = nil, entityName: String, completion: @escaping ([NSFetchRequestResult])->()) {
-        //DispatchQueue.global(qos: .background).async {
-            let fetchEntity = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-            if predicate != nil {
-                fetchEntity.predicate = predicate
-            }
-            completeRequest(fetchEntity: fetchEntity, context: context, completion: completion)
-        //}
-
+        let fetchEntity = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        if predicate != nil {
+            fetchEntity.predicate = predicate
+        }
+        completeRequest(fetchEntity: fetchEntity, context: context, completion: completion)
     }
     
     // completeRequest is synchronouse because we don't want the rest of the app to move forward accidentally without the pin.
     private static func completeRequest(fetchEntity: NSFetchRequest<NSFetchRequestResult>, context: NSManagedObjectContext, completion: @escaping (([NSFetchRequestResult])->())) {
-        //DispatchQueue.global(qos: .background).async {
-            do {
-                let fetchedEntities: [NSFetchRequestResult] = try context.fetch(fetchEntity)
-                completion(fetchedEntities)
-            } catch {
-                fatalError("Failed to fetch employees: \(error)")
-            }
-        //}
+        do {
+            let fetchedEntities: [NSFetchRequestResult] = try context.fetch(fetchEntity)
+            completion(fetchedEntities)
+        } catch {
+            fatalError("Failed to fetch entities: \(error)")
+        }
     }
     
     
     static func requestWith(requestType: String, requestURL: String, completionHandler: @escaping ([String: AnyObject]?, Error?)-> Void) {
-        
         let baseURL = URL(string: requestURL)!
         var request = URLRequest(url: baseURL)
         request.httpMethod = requestType
@@ -78,7 +72,7 @@ class BackgroundOps {
         
         requestWith(requestType: "GET", requestURL: getPhotosURL, completionHandler: {
             photosJSON,error in
-            //print(photosJSON)
+            
             guard error == nil, let photosJSON = photosJSON, let photos = photosJSON["photos"] as? [String: AnyObject] else {
                 print("Err with request")
                 completion(nil, error)
@@ -93,7 +87,7 @@ class BackgroundOps {
                 }
                 photosURLS.append(url)  // Add url to array
             }
-            //print(photosURLS)
+            
             completion(photosURLS, nil)
         })
     }
